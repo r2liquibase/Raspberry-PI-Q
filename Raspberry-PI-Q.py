@@ -8,6 +8,7 @@
 
 import smbus
 import RPi.GPIO as GPIO
+import piplates.THERMOplate as THERMO
 import time
 from time import sleep
 import datetime
@@ -46,8 +47,8 @@ for i in pinList:
     GPIO.setup(i, GPIO.OUT) 
     GPIO.output(i, GPIO.HIGH)
 
-THERMOCOUPLE_1_ADDRESS  = 0x4f # I2C address for Robogaia dual thermocouple
-THERMOCOUPLE_2_ADDRESS  = 0x4c # I2C address for Robogaia dual thermocouple
+GRILL_THERMOCOUPLE  = 1 # Thermocouple input on Pi-Plates THERMOplate board
+MEAT_THERMOCOUPLE =2 # Thermocouple input on Pi-Plates THERMOplate board
 NUM_TEMPERATURE_SAMPLES = 10   # How many temperature samples to take to calculate harmonic mean
 #==================== FIXED GLOBAL VARIABLES ====================#
 
@@ -55,6 +56,7 @@ NUM_TEMPERATURE_SAMPLES = 10   # How many temperature samples to take to calcula
 global groveUpdateStartTime
 groveUpdateStartTime = time.time()
 GROVESTREAMS_UPDATE_INTERVAL_MINS = 3
+THERMO.setSCALE('f') # use Farenheit
 #=================== OTHER GLOBAL VARIABLES  ====================#
 
 #================================================================#
@@ -171,9 +173,8 @@ def get_current_Grill_temp():
         totalHarmonic = 0
         arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
         while counter < NUM_TEMPERATURE_SAMPLES:
-            data = bus.read_i2c_block_data(THERMOCOUPLE_1_ADDRESS, 1, 2)
-            val = (data[0] << 8) + data[1]
-            arrayOfTemps[counter] = val/5.00*9.00/5.00+32.00            
+            temp = THERMO.getTemp(0, GRILL_THERMOCOUPLE)
+            arrayOfTemps[counter] = temp/5.00*9.00/5.00+32.00
             totalHarmonic = totalHarmonic + (1 / arrayOfTemps[counter])
             counter = counter + 1
 
@@ -195,9 +196,8 @@ def get_current_Meat_temp():
         totalHarmonic = 0
         arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
         while counter < NUM_TEMPERATURE_SAMPLES:
-            data = bus.read_i2c_block_data(THERMOCOUPLE_2_ADDRESS, 1, 2)
-            val = (data[0] << 8) + data[1]
-            arrayOfTemps[counter] = val/5.00*9.00/5.00+32.00            
+            temp = THERMO.getTemp(0, MEAT_THERMOCOUPLE)
+            arrayOfTemps[counter] = temp/5.00*9.00/5.00+32.00
             totalHarmonic = totalHarmonic + (1 / arrayOfTemps[counter])
             counter = counter + 1
 
