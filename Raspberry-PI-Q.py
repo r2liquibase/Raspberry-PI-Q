@@ -173,8 +173,7 @@ def get_current_Grill_temp():
         totalHarmonic = 0
         arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
         while counter < NUM_TEMPERATURE_SAMPLES:
-            temp = THERMO.getTEMP(0, GRILL_THERMOCOUPLE)
-            arrayOfTemps[counter] = temp/5.00*9.00/5.00+32.00
+            arrayOfTemps[counter] = THERMO.getTEMP(0, GRILL_THERMOCOUPLE)
             totalHarmonic = totalHarmonic + (1 / arrayOfTemps[counter])
             counter = counter + 1
 
@@ -196,8 +195,7 @@ def get_current_Meat_temp():
         totalHarmonic = 0
         arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
         while counter < NUM_TEMPERATURE_SAMPLES:
-            temp = THERMO.getTEMP(0, MEAT_THERMOCOUPLE)
-            arrayOfTemps[counter] = temp/5.00*9.00/5.00+32.00
+            arrayOfTemps[counter] = THERMO.getTEMP(0, MEAT_THERMOCOUPLE)
             totalHarmonic = totalHarmonic + (1 / arrayOfTemps[counter])
             counter = counter + 1
 
