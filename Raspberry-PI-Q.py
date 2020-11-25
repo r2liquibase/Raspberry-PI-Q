@@ -170,43 +170,41 @@ def log_dweety_data(currGrillTemp, desiredGrillTemp, currMeatTemp, desiredMeatTe
 def get_current_Grill_temp(): 
     try:
         counter = 0
-        totalHarmonic = 0
+        total = 0
         arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
         while counter < NUM_TEMPERATURE_SAMPLES:
             arrayOfTemps[counter] = THERMO.getTEMP(0, GRILL_THERMOCOUPLE)
-            totalHarmonic = totalHarmonic + (1 / arrayOfTemps[counter])
+            total = total + 1
             counter = counter + 1
 
         # since thermocouples are unreliable and can have variance in their readings
         # use the thermocouple to gather 10 samples, or NUM_TEMPERATURE_SAMPLES
-        # use the samples and statistics to get the harmonic mean and the grouped median out of those values
-        # average the harmonic mean and grouped median and return that as the value
-        harmonicMean = NUM_TEMPERATURE_SAMPLES / totalHarmonic        
-        return float("%.2f" % ((statistics.median_grouped(arrayOfTemps) + harmonicMean) / 2))
+        # and return the mean
+        mean = NUM_TEMPERATURE_SAMPLES / total
+        return float("%.2f" % mean)
     except Exception as e:
         smartPrint("***** Warning: Failed to gather data from device (Grill Temperature). Exception: %s" % str(e))
         raise
 
 #================================================================#
 
-def get_current_Meat_temp(): 
+def get_current_Meat_temp():
     try:
         counter = 0
-        totalHarmonic = 0
-        arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
+        total = 0
+        arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES
         while counter < NUM_TEMPERATURE_SAMPLES:
             arrayOfTemps[counter] = THERMO.getTEMP(0, MEAT_THERMOCOUPLE)
-            totalHarmonic = totalHarmonic + (1 / arrayOfTemps[counter])
+            total = total + 1
             counter = counter + 1
 
         # since thermocouples are unreliable and can have variance in their readings
         # use the thermocouple to gather 10 samples, or NUM_TEMPERATURE_SAMPLES
-        # use the samples and statistics to get the harmonic mean and the grouped median out of those values
-        # average the harmonic mean and grouped median and return that as the value
-        harmonicMean = NUM_TEMPERATURE_SAMPLES / totalHarmonic        
-        return float("%.2f" % ((statistics.median_grouped(arrayOfTemps) + harmonicMean) / 2))
+        # and return the mean
+        mean = NUM_TEMPERATURE_SAMPLES / total
+        return float("%.2f" % mean)
     except Exception as e:
-        smartPrint("***** Warning: Failed to gather data from device (Meat Temperature). Exception: %s" % str(e))
+        smartPrint("***** Warning: Failed to gather data from device (Grill Temperature). Exception: %s" % str(e))
         raise
 
 #================================================================#
