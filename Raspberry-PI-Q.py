@@ -6,7 +6,7 @@
 # https://raw.githubusercontent.com/michmike/Raspberry-PI-Q/master/LICENSE
 #================================================================#
 
-import smbus
+#import smbus
 import RPi.GPIO as GPIO
 import piplates.THERMOplate as THERMO
 import time
@@ -40,7 +40,7 @@ GROVE_COMPONENT_ID = "<entered through arguments>" # this has the same value as 
 
 #==================== FIXED GLOBAL VARIABLES ====================#
 GPIO_RELAY_FAN_PIN = 26 # this is the GPIO PIN number on the Raspberry for the Fan Relay
-bus = smbus.SMBus(1)
+#bus = smbus.SMBus(1)
 GPIO.setmode(GPIO.BCM)
 pinList = [GPIO_RELAY_FAN_PIN]
 for i in pinList: 
