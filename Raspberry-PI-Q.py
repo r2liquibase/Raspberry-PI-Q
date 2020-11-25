@@ -163,25 +163,13 @@ def log_dweety_data(currGrillTemp, desiredGrillTemp, currMeatTemp, desiredMeatTe
     except requests.HTTPError as httperror:        
         smartPrint("***** Warning: Failed to upload data to dweet.io. HTTPError({0}): {1}]".format(httperror.errno, httperror.strerror))
     except Exception as e:
-        smartPrint("***** Warning: Failed to upload data to dweet.io. Exception %s" % str(e))        
+        smartPrint("***** Warning: Failed to upload data to dweet.io. Exception %s" % str(e))
 
 #================================================================#
 
-def get_current_Grill_temp(): 
+def get_current_Grill_temp():
     try:
-        counter = 0
-        total = 0
-        arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES 
-        while counter < NUM_TEMPERATURE_SAMPLES:
-            arrayOfTemps[counter] = THERMO.getTEMP(0, GRILL_THERMOCOUPLE)
-            total = total + 1
-            counter = counter + 1
-
-        # since thermocouples are unreliable and can have variance in their readings
-        # use the thermocouple to gather 10 samples, or NUM_TEMPERATURE_SAMPLES
-        # and return the mean
-        mean = NUM_TEMPERATURE_SAMPLES / total
-        return float("%.2f" % mean)
+        return THERMO.getTEMP(0, GRILL_THERMOCOUPLE)
     except Exception as e:
         smartPrint("***** Warning: Failed to gather data from device (Grill Temperature). Exception: %s" % str(e))
         raise
@@ -190,19 +178,7 @@ def get_current_Grill_temp():
 
 def get_current_Meat_temp():
     try:
-        counter = 0
-        total = 0
-        arrayOfTemps = [None] * NUM_TEMPERATURE_SAMPLES
-        while counter < NUM_TEMPERATURE_SAMPLES:
-            arrayOfTemps[counter] = THERMO.getTEMP(0, MEAT_THERMOCOUPLE)
-            total = total + 1
-            counter = counter + 1
-
-        # since thermocouples are unreliable and can have variance in their readings
-        # use the thermocouple to gather 10 samples, or NUM_TEMPERATURE_SAMPLES
-        # and return the mean
-        mean = NUM_TEMPERATURE_SAMPLES / total
-        return float("%.2f" % mean)
+        return THERMO.getTEMP(0, MEAT_THERMOCOUPLE)
     except Exception as e:
         smartPrint("***** Warning: Failed to gather data from device (Grill Temperature). Exception: %s" % str(e))
         raise
